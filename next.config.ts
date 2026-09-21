@@ -1,8 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  reactCompiler: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**", // add pathname wildcard too
+      },
+    ],
+    dangerouslyAllowLocalIP:true
+  },
 };
 
 export default nextConfig;
