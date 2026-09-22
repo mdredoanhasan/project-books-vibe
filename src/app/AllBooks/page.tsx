@@ -7,7 +7,7 @@ const getBooks = async () => {
   return data;
 };
 
-const BooksPage = async () => {
+const AllBooksPage = async () => {
   const Books = await getBooks();
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
@@ -19,7 +19,7 @@ const BooksPage = async () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Books.slice(0,20).map((book: BooksType, inx: number) => {
+        {Books.map((book: BooksType, inx: number) => {
           return <BooksCard key={inx} book={book}></BooksCard>;
         })}
       </div>
@@ -27,4 +27,4 @@ const BooksPage = async () => {
   );
 };
 
-export default BooksPage;
+export default AllBooksPage;

@@ -23,7 +23,7 @@ const NavBar = () => {
             Home
           </Link>
           <Link
-            href="/Books"
+            href="/AllBooks"
             className="text-sm font-medium text-slate-600 transition hover:text-slate-900"
           >
             Books

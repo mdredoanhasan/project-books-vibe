@@ -1,12 +1,12 @@
-import React from 'react';
-import HeroSection from './heroSection/page';
-import BooksPage from './Books/page';
+import React from "react";
+import HeroSection from "./BannerSection/page";
+import BooksPage from "./Books/page";
 
 const HomePage = () => {
   return (
     <div>
       <HeroSection />
-      <BooksPage/>
+      <BooksPage />
     </div>
   );
 };

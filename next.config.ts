@@ -3,12 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**", // add pathname wildcard too
-      },
+      { protocol: "https", hostname: "covers.openlibrary.org" },
+      { protocol: "https", hostname: "placehold.co" },
+      { protocol: "https", hostname: "i.ibb.co.com" },
     ],
-    dangerouslyAllowLocalIP:true
+    dangerouslyAllowSVG: true,
+    dangerouslyAllowLocalIP: true,
   },
 };
 
