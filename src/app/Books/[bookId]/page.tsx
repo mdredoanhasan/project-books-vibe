@@ -1,18 +1,46 @@
+"use client";
+
 import booksData from "@/../public/booksData.json";
 import { BooksType } from "@/app/type/book.type";
 import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-interface ProductPageProps {
-  params: Promise<{ bookId: string }>;
-}
-
-const BookDetails = async ({ params }: ProductPageProps) => {
-  const { bookId } = await params;
+const BookDetails = () => {
+  const params = useParams<{ bookId: string }>();
+  const bookId = Number(params?.bookId);
   const books = booksData as BooksType[];
+  const [isWishlisted, setIsWishlisted] = useState(false);
 
   const book = books.find(
     (item: BooksType) => Number(item.bookId) === Number(bookId),
   );
+
+  useEffect(() => {
+    if (!bookId) return;
+
+    const savedWishlist = JSON.parse(
+      localStorage.getItem("wishlistBooks") || "[]",
+    ) as number[];
+
+    setIsWishlisted(savedWishlist.includes(bookId));
+  }, [bookId]);
+
+  const toggleWishlist = () => {
+    if (!bookId) return;
+
+    const savedWishlist = JSON.parse(
+      localStorage.getItem("wishlistBooks") || "[]",
+    ) as number[];
+
+    const nextWishlist = savedWishlist.includes(bookId)
+      ? savedWishlist.filter((id) => id !== bookId)
+      : [...savedWishlist, bookId];
+
+    localStorage.setItem("wishlistBooks", JSON.stringify(nextWishlist));
+    setIsWishlisted(nextWishlist.includes(bookId));
+    window.dispatchEvent(new Event("wishlistUpdated"));
+  };
 
   if (!book) {
     return (
@@ -130,8 +158,15 @@ const BookDetails = async ({ params }: ProductPageProps) => {
               <button className="inline-flex items-center justify-center rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
                 Start reading
               </button>
-              <button className="inline-flex items-center justify-center rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100">
-                Add to wishlist
+              <button
+                onClick={toggleWishlist}
+                className={`inline-flex items-center justify-center rounded-full border px-6 py-3 text-sm font-semibold transition ${
+                  isWishlisted
+                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                    : "border-slate-200 bg-white text-slate-800 hover:bg-slate-100"
+                }`}
+              >
+                {isWishlisted ? "Added to wishlist" : "Add to wishlist"}
               </button>
             </div>
           </div>

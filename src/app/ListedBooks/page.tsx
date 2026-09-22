@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import booksData from "@/../public/booksData.json";
 import { BooksType } from "@/app/type/book.type";
 
@@ -10,10 +10,34 @@ const books = booksData as BooksType[];
 
 type SortType = "title" | "rating" | "year";
 
+const getWishlistFromStorage = () => {
+  if (typeof window === "undefined") return [];
+
+  try {
+    return JSON.parse(
+      localStorage.getItem("wishlistBooks") || "[]",
+    ) as number[];
+  } catch {
+    return [];
+  }
+};
+
 const ListedBooksPage = () => {
   const [activeTab, setActiveTab] = useState<"read" | "wishlist">("read");
   const [sortBy, setSortBy] = useState<SortType>("title");
   const [wishlist, setWishlist] = useState<number[]>([]);
+
+  useEffect(() => {
+    setWishlist(getWishlistFromStorage());
+
+    const handleWishlistUpdate = () => {
+      setWishlist(getWishlistFromStorage());
+    };
+
+    window.addEventListener("wishlistUpdated", handleWishlistUpdate);
+    return () =>
+      window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
+  }, []);
 
   const sortedBooks = useMemo(() => {
     const items = [...books];
@@ -37,11 +61,13 @@ const ListedBooksPage = () => {
   );
 
   const toggleWishlist = (bookId: number) => {
-    setWishlist((current) =>
-      current.includes(bookId)
-        ? current.filter((id) => id !== bookId)
-        : [...current, bookId],
-    );
+    const nextWishlist = wishlist.includes(bookId)
+      ? wishlist.filter((id) => id !== bookId)
+      : [...wishlist, bookId];
+
+    localStorage.setItem("wishlistBooks", JSON.stringify(nextWishlist));
+    setWishlist(nextWishlist);
+    window.dispatchEvent(new Event("wishlistUpdated"));
   };
 
   const renderBookCard = (book: BooksType, isWishlistView = false) => (

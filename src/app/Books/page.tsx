@@ -17,7 +17,7 @@ const BooksPage = async () => {
           Browse collection
         </p>
         <Link
-            href="/ListedBooks"
+            href="/AllBooks"
             className="text-3xl font-medium text-slate-600 transition hover:text-slate-900"
           >
            More Books
