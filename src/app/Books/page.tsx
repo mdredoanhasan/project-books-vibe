@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BooksCard from "../components/BooksCard";
 import { BooksType } from "../type/book.type";
 
@@ -12,14 +13,19 @@ const BooksPage = async () => {
   return (
     <main className="mx-auto max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
       <div className="mb-10 text-center">
-        <p className="text-sm font-medium uppercase tracking-[0.28em] text-emerald-600">
+        <p className="text-sm font-medium uppercase tracking-[0.28em] text-emerald-600 mb-6">
           Browse collection
         </p>
-        <h2 className="mt-3 text-4xl font-bold text-slate-900">Books</h2>
+        <Link
+            href="/ListedBooks"
+            className="text-3xl font-medium text-slate-600 transition hover:text-slate-900"
+          >
+           More Books
+          </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Books.slice(0,20).map((book: BooksType, inx: number) => {
+        {Books.slice(0,12).map((book: BooksType, inx: number) => {
           return <BooksCard key={inx} book={book}></BooksCard>;
         })}
       </div>

@@ -15,7 +15,7 @@ const AllBooksPage = async () => {
         <p className="text-sm font-medium uppercase tracking-[0.28em] text-emerald-600">
           Browse collection
         </p>
-        <h2 className="mt-3 text-4xl font-bold text-slate-900">Books</h2>
+        <h2 className="mt-3 text-4xl font-bold text-slate-900">All Books</h2>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
