@@ -1,11 +1,6 @@
 import BooksCard from "../components/BooksCard";
 import { BooksType } from "../type/book.type";
-
-const getBooks = async () => {
-  const response = await fetch("http://localhost:3000/booksData.json");
-  const data = await response.json();
-  return data;
-};
+import { getBooks } from "../lib/getBooks";
 
 const AllBooksPage = async () => {
   const Books = await getBooks();

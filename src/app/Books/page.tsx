@@ -1,12 +1,7 @@
 import Link from "next/link";
 import BooksCard from "../components/BooksCard";
 import { BooksType } from "../type/book.type";
-
-const getBooks = async () => {
-  const response = await fetch("http://localhost:3000/booksData.json");
-  const data = await response.json();
-  return data;
-};
+import { getBooks } from "../lib/getBooks";
 
 const BooksPage = async () => {
   const Books = await getBooks();
@@ -17,15 +12,15 @@ const BooksPage = async () => {
           Browse collection
         </p>
         <Link
-            href="/AllBooks"
-            className="text-3xl font-medium text-slate-600 transition hover:text-slate-900"
-          >
-           More Books
-          </Link>
+          href="/AllBooks"
+          className="text-3xl font-medium text-slate-600 transition hover:text-slate-900"
+        >
+          More Books
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Books.slice(0,12).map((book: BooksType, inx: number) => {
+        {Books.slice(0, 12).map((book: BooksType, inx: number) => {
           return <BooksCard key={inx} book={book}></BooksCard>;
         })}
       </div>

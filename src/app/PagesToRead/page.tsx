@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import booksData from "@/../public/booksData.json";
 import { BooksType } from "@/app/type/book.type";
-
-const bookList = (booksData as BooksType[]).slice(0, 4);
+import { getBooks } from "@/app/lib/getBooks";
 
 const readingStats = [
   { label: "Pages this month", value: "1,540" },
@@ -29,7 +27,10 @@ const upcomingReads = [
   },
 ];
 
-const PagesToReadPage = () => {
+const PagesToReadPage = async () => {
+  const books = await getBooks();
+  const bookList = (books as BooksType[]).slice(0, 4);
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="mb-8 flex flex-col gap-4 rounded-[30px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.05)] sm:p-6">

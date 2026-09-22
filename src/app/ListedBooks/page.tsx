@@ -3,10 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import booksData from "@/../public/booksData.json";
 import { BooksType } from "@/app/type/book.type";
-
-const books = booksData as BooksType[];
 
 type SortType = "title" | "rating" | "year";
 
@@ -25,18 +22,29 @@ const getWishlistFromStorage = () => {
 const ListedBooksPage = () => {
   const [activeTab, setActiveTab] = useState<"read" | "wishlist">("read");
   const [sortBy, setSortBy] = useState<SortType>("title");
-  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [books, setBooks] = useState<BooksType[]>([]);
+  const [wishlist, setWishlist] = useState<number[]>(getWishlistFromStorage);
 
   useEffect(() => {
-    setWishlist(getWishlistFromStorage());
+    let isCancelled = false;
+
+    const loadBooks = async () => {
+      const response = await fetch("/booksData.json");
+      const data = (await response.json()) as BooksType[];
+      if (!isCancelled) setBooks(data);
+    };
+
+    void loadBooks();
 
     const handleWishlistUpdate = () => {
       setWishlist(getWishlistFromStorage());
     };
 
     window.addEventListener("wishlistUpdated", handleWishlistUpdate);
-    return () =>
+    return () => {
+      isCancelled = true;
       window.removeEventListener("wishlistUpdated", handleWishlistUpdate);
+    };
   }, []);
 
   const sortedBooks = useMemo(() => {
@@ -51,7 +59,7 @@ const ListedBooksPage = () => {
     }
 
     return items.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
-  }, [sortBy]);
+  }, [books, sortBy]);
 
   const readBooks = sortedBooks.filter(
     (book) => !wishlist.includes(book.bookId),
